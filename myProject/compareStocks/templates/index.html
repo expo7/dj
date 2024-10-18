@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% comment %} {% block title %}Stock Showdown{% endblock %} {% endcomment %}
+
+{% block content %}
+<h1 class="text-center">Stock Showdown: A Comparative Analysis</h1>
+<p class="text-center">Welcome to Stock Showdown, where you can quickly compare two companies and see how they stack up against each other across key financial metrics. Enter the ticker symbols of two companies, and let us handle the rest!</p>
+<div class="d-flex justify-content-center">
+    <div class="card p-4" style="width: 30rem;">
+        <form id="stock-form" action="" method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="ticker1">Stock Ticker 1:</label>
+                <input type="text" id="ticker1" name="ticker1" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="ticker2">Stock Ticker 2:</label>
+                <input type="text" id="ticker2" name="ticker2" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Analyze</button>
+        </form>
+    </div>
+</div>
+<div id="loading-spinner" class="text-center" style="display: none;">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div id="analysis-container">
+{% if ticker1 and ticker2 %}
+        <div>{{ analysis|safe }}</div>
+    <div class="container">
+        <h2>Stock Comparison</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>{{ data1.longName }}</th>
+                    <th>{{ data2.longName }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Market Cap</td>
+                    <td>{{ data1.marketCap }}</td>
+                    <td>{{ data2.marketCap }}</td>
+                </tr>
+                <tr>
+                    <td>Enterprise Value</td>
+                    <td>{{ data1.enterpriseValue }}</td>
+                    <td>{{ data2.enterpriseValue }}</td>
+                </tr>
+                <tr>
+                    <td>Trailing PE</td>
+                    <td>{{ data1.trailingPE }}</td>
+                    <td>{{ data2.trailingPE }}</td>
+                </tr>
+                <tr>
+                    <td>Forward PE</td>
+                    <td>{{ data1.forwardPE }}</td>
+                    <td>{{ data2.forwardPE }}</td>
+                </tr>
+                <tr>
+                    <td>PEG Ratio</td>
+                    <td>{{ data1.pegRatio }}</td>
+                    <td>{{ data2.pegRatio }}</td>
+                </tr>
+                <tr>
+                    <td>Price to Sales</td>
+                    <td>{{ data1.priceToSalesTrailing12Months }}</td>
+                    <td>{{ data2.priceToSalesTrailing12Months }}</td>
+                </tr>
+                <tr>
+                    <td>Price to Book</td>
+                    <td>{{ data1.priceToBook }}</td>
+                    <td>{{ data2.priceToBook }}</td>
+                </tr>
+                <tr>
+                    <td>Enterprise to Revenue</td>
+                    <td>{{ data1.enterpriseToRevenue }}</td>
+                    <td>{{ data2.enterpriseToRevenue }}</td>
+                </tr>
+                <tr>
+                    <td>Enterprise to EBITDA</td>
+                    <td>{{ data1.enterpriseToEbitda }}</td>
+                    <td>{{ data2.enterpriseToEbitda }}</td>
+                </tr>
+                <tr>
+                    <td>52 Week High</td>
+                    <td>{{ data1.fiftyTwoWeekHigh }}</td>
+                    <td>{{ data2.fiftyTwoWeekHigh }}</td>
+                </tr>
+                <tr>
+                    <td>52 Week Low</td>
+                    <td>{{ data1.fiftyTwoWeekLow }}</td>
+                    <td>{{ data2.fiftyTwoWeekLow }}</td>
+                </tr>
+                <tr>
+                    <td>50 Day Average</td>
+                    <td>{{ data1.fiftyDayAverage }}</td>
+                    <td>{{ data2.fiftyDayAverage }}</td>
+                </tr>
+                <tr>
+                    <td>200 Day Average</td>
+                    <td>{{ data1.twoHundredDayAverage }}</td>
+                    <td>{{ data2.twoHundredDayAverage }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><a href="/definitions">View Definitions</a></p>
+
+
+    </div>
+{% endif %}
+</div>
+{% endblock %}
